@@ -12,4 +12,5 @@ backend-go/*.test
 
 # Editor / OS
 .DS_Store
-*.swpmemory/
+*.swp
+memory/

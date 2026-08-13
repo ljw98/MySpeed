@@ -9,7 +9,7 @@
 # Runtime: scratch (zero base image)
 
 # Stage 1: Build frontend
-FROM node:20-alpine AS frontend
+FROM node:22-alpine AS frontend
 WORKDIR /app
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN corepack enable && pnpm install --frozen-lockfile
