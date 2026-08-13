@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<!-- Icons are pre-fetched via fetch+blob URL in ring.ts at runtime. -->
+<title>MySpeed</title>
+</head>
+
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        <span class="status-label">MySpeed</span>
+        <span class="top-bar-subtitle">Design by David</span>
+        <span class="ip-info">IP: <span id="ip">--</span></span>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Left+Right row -->
+    <div class="main-row">
+
+    <!-- Left: Circular Progress Bar -->
+    <div class="speedometer-wrapper">
+        <div class="speedometer-outer-glow">
+            <div class="speedometer-ring">
+                <svg class="circular-progress" viewBox="0 0 240 240">
+                    <defs>
+                        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ed8936" />
+                            <stop offset="50%" stop-color="#f6ad55" />
+                            <stop offset="100%" stop-color="#f6e05e" />
+                        </linearGradient>
+                        <linearGradient id="completeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f59e0b" />
+                            <stop offset="100%" stop-color="#fcd34d" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="progress-ring-bg" cx="120" cy="120" r="108" fill="none" />
+                    <circle class="progress-ring" id="progressRing" cx="120" cy="120" r="108" fill="none" stroke-dasharray="678.584" stroke-dashoffset="678.584" />
+                </svg>
+                <div class="water-tank" id="waterTank">
+                    <svg class="water-svg" viewBox="0 0 240 240" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="waterGradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop id="stopTop" offset="0%" stop-color="#7abcff" />
+                                <stop id="stopMid" offset="45%" stop-color="#00BCD4" />
+                                <stop id="stopBot" offset="100%" stop-color="#2196F3" />
+                            </linearGradient>
+                        </defs>
+                        <path id="waveBack" d="" />
+                        <path id="waveFront" d="" />
+                    </svg>
+                </div>
+                <div class="progress-content" id="progressContent">
+                    <div class="main-value">
+                        <span id="progressValue">--</span>
+                        <img id="tierIcon" class="tier-icon" src="/icons/rocket.png" alt="" style="display:none">
+                    </div>
+                    <div class="main-unit" id="progressUnit">Mbps</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Stats Grid -->
+    <div class="stats-grid">
+
+        <!-- Ping -->
+        <div class="stat-item">
+            <div class="stat-value-row">
+                <svg class="stat-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="#F09819" />
+                    <g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <path d="M28,50 L72,50 M34,42 L28,50 L34,58 M66,42 L72,50 L66,58" />
+                    </g>
+                </svg>
+                <span class="stat-number" id="pingValue">0.0</span>
+            </div>
+            <div class="stat-meta">
+                <span class="stat-label">延时</span>
+                <span class="stat-unit" id="pingUnit">ms</span>
+            </div>
+        </div>
+
+        <!-- Jitter -->
+        <div class="stat-item">
+            <div class="stat-value-row">
+                <svg class="stat-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="#E63946" />
+                    <path d="M30,50 C35,38 45,38 50,50 C55,62 65,62 70,50" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
+                <span class="stat-number" id="jitValue">0.0</span>
+            </div>
+            <div class="stat-meta">
+                <span class="stat-label">抖动</span>
+                <span class="stat-unit" id="jitUnit">ms</span>
+            </div>
+        </div>
+
+        <!-- Download -->
+        <div class="stat-item">
+            <div class="stat-value-row">
+                <svg class="stat-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="#3B82F6" />
+                    <g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <path d="M50,35 L50,65 M38,52 L50,65 L62,52" />
+                    </g>
+                </svg>
+                <span class="stat-number" id="dlValue">0.0</span>
+            </div>
+            <div class="stat-meta">
+                <span class="stat-label">下载</span>
+                <span class="stat-unit" id="dlUnit">Mbps</span>
+            </div>
+        </div>
+
+        <!-- Upload -->
+        <div class="stat-item">
+            <div class="stat-value-row">
+                <svg class="stat-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="#22C55E" />
+                    <g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <path d="M50,65 L50,35 M38,48 L50,35 L62,48" />
+                    </g>
+                </svg>
+                <span class="stat-number" id="ulValue">0.0</span>
+            </div>
+            <div class="stat-meta">
+                <span class="stat-label">上传</span>
+                <span class="stat-unit" id="ulUnit">Mbps</span>
+            </div>
+        </div>
+
+    </div>
+    </div><!-- /main-row -->
+
+    <button id="startStopBtn" class="start-btn">开始测试</button>
+</div>
+
+<script type="module" src="/src/ui/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+services:
+  myspeed:
+    build: .
+    ports:
+      - "8090:8090"
+    environment:
+      - TITLE=MySpeed
+      - PORT=8090
+      - DISABLE_IPINFO=false
+      - DISTANCE_UNIT=km
+    restart: unless-stopped

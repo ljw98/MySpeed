@@ -1,0 +1,550 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    font-size: 16px;
+    /* Brand colors */
+    --color-primary: #2d3a4a;
+    --color-primary-light: #4a5568;
+    --color-muted: #718096;
+    --color-muted-light: #a0aec0;
+    /* Accent — start button gradient */
+    --color-start-from: #0094E7;
+    --color-start-to: #6771FF;
+    /* Stop button gradient */
+    --color-stop-from: #e53e3e;
+    --color-stop-to: #fc8181;
+    /* Water tank — completed amber */
+    --color-amber-light: #fcd34d;
+    --color-amber: #f59e0b;
+    /* Water tank — blue gradient */
+    --color-water-top: #7abcff;
+    --color-water-mid: #00BCD4;
+    --color-water-bot: #2196F3;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #f0f0f0 100%);
+    color: #2d3748;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 环境光：底部栏后方两团极淡色晕，供 backdrop-blur 透显玻璃感 */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: -1;
+    filter: blur(50px);
+}
+
+body::before {
+    width: 460px;
+    height: 460px;
+    left: 6%;
+    bottom: -12%;
+    background: radial-gradient(circle, rgba(237, 137, 54, 0.10), transparent 70%);
+}
+
+body::after {
+    width: 520px;
+    height: 520px;
+    right: 5%;
+    bottom: -14%;
+    background: radial-gradient(circle, rgba(66, 153, 225, 0.09), transparent 70%);
+}
+
+/* ─── Top Bar ─────────────────────────────────────────── */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 18px 28px 14px;
+}
+
+.top-bar-left {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    gap: 1px;
+    position: relative;
+}
+
+.ip-info {
+    font-size: 10px;
+    color: var(--color-muted-light);
+    letter-spacing: 0.03em;
+    margin-top: 1px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    white-space: nowrap;
+}
+
+.status-label {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #1a202c;
+    text-transform: uppercase;
+}
+
+.top-bar-subtitle {
+    font-size: 11px;
+    color: var(--color-muted-light);
+    letter-spacing: 0.04em;
+    margin-top: 1px;
+}
+
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 14px 20px 12px;
+    }
+    .status-label {
+        font-size: 18px;
+    }
+    .top-bar-subtitle {
+        font-size: 10px;
+    }
+    .ip-info {
+        font-size: 9px;
+    }
+}
+
+/* ─── Main Content ────────────────────────────────────── */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 110px;
+    padding: 20px 60px 32px;
+}
+
+.main-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+}
+
+@media (max-width: 1024px) {
+    .main-content {
+        gap: 60px;
+        padding: 20px 30px 24px;
+    }
+    .main-row {
+        flex-direction: column;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 15px 20px 24px;
+        gap: 60px;
+    }
+    .main-row {
+        gap: 30px;
+    }
+}
+
+/* ─── Circular Progress Bar ──────────────────────────── */
+.speedometer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.speedometer-outer-glow {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #f5f0e8 0%, #eae5dd 40%, #f5f5f0 68%, #f8f8f8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.speedometer-ring {
+    width: 254px;
+    height: 254px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, #ffffff 0%, #fbfbfc 50%, #f2f3f5 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow:
+        inset 0 4px 20px rgba(45, 58, 74, 0.12),
+        inset 0 1px 5px rgba(45, 58, 74, 0.08),
+        0 0 0 7px #f0f0f0,
+        0 12px 32px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.circular-progress {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    transform: rotate(-90deg);
+    z-index: 1;
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: #e8e8e8;
+    stroke-width: 16;
+}
+
+.progress-ring {
+    fill: none;
+    stroke: url(#progressGradient);
+    stroke-width: 16;
+    stroke-linecap: round;
+    stroke-dasharray: 678.584;
+    stroke-dashoffset: 678.584;
+    transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
+}
+
+.progress-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    z-index: 3;
+}
+
+.main-value {
+    font-size: 4rem;
+    font-weight: bolder;
+    color: var(--color-primary);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    text-align: center;
+    min-width: 10rem;
+    display: inline-block;
+    box-sizing: border-box;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.main-unit {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    letter-spacing: 0.08em;
+    line-height: 1;
+    min-height: 1rem;
+    text-align: center;
+}
+
+.tier-icon {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+/* ─── Water tank: overall test progress ─────────────────
+   The dial center doubles as a round tank. Water level = overall
+   progress (latency → download → upload); full tank = test done.
+   Water = stacked coloured wave volumes (LKAWaveCircleProgressBar
+   port); the waterline is the top arc of each volume, clipped by the
+   round tank. */
+.water-tank {
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 2;
+}
+.water-tank.active {
+    opacity: 1;
+}
+
+/* SVG sine waves — LKAWaveCircleProgressBar port. Each path is a filled
+   water body: y = A·sin(W·x + U + phase) + level, closed to the tank
+   bottom; the round tank clip cuts water at the rim. The back layer is
+   translucent and offset in phase so the two crests cross and the stack
+   reads as depth. Colours live on the gradient fills in index.html. */
+.water-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+#waveFront {
+    fill: url(#waterGradient);
+    opacity: 0.9;
+}
+#waveBack {
+    fill: url(#waterGradient);
+    opacity: 0.45;
+}
+/* Completion: water turns amber with a smooth colour transition.
+   Instead of swapping the gradient URL (which can't be animated), we
+   transition the <stop> elements' stop-color directly. */
+#stopTop,
+#stopMid,
+#stopBot {
+    transition: stop-color 0.8s ease;
+}
+#waveBack {
+    transition: opacity 0.8s ease;
+}
+.water-tank.done #stopTop { stop-color: var(--color-amber-light); }
+.water-tank.done #stopMid { stop-color: var(--color-amber-light); }
+.water-tank.done #stopBot { stop-color: var(--color-amber); }
+.water-tank.done #waveBack {
+    opacity: 0.5;
+}
+
+/* When the waterline passes the center, flip the readout to white. */
+.water-tank.submerged + .progress-content .main-value {
+    background: linear-gradient(135deg, #ffffff, #e8f7ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.water-tank.submerged + .progress-content .main-unit {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+
+@media (max-width: 768px) {
+    .speedometer-wrapper {
+        width: 100%;
+        max-width: 19.875rem;
+        margin: 0 auto;
+    }
+    .speedometer-outer-glow {
+        width: 100%;
+        max-width: 18.625rem;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+    .speedometer-ring {
+        width: 80%;
+        max-width: 14.875rem;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+    .circular-progress {
+        top: -17px;
+        left: -17px;
+        width: calc(100% + 34px);
+        height: calc(100% + 34px);
+    }
+    .progress-ring-bg, .progress-ring {
+        stroke-width: 13;
+    }
+    .main-value {
+        font-size: 3.1rem;
+        min-width: 7.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .speedometer-wrapper {
+        max-width: 17.75rem;
+    }
+    .speedometer-outer-glow {
+        max-width: 16.5rem;
+    }
+    .speedometer-ring {
+        max-width: 13.2rem;
+    }
+    .circular-progress {
+        top: -13px;
+        left: -13px;
+        width: calc(100% + 26px);
+        height: calc(100% + 26px);
+    }
+    .progress-ring-bg, .progress-ring {
+        stroke-width: 11;
+    }
+    .main-value {
+        font-size: 2.8rem;
+        min-width: 6.5rem;
+    }
+}
+
+/* ─── Stats Grid ──────────────────────────────────────── */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px 60px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.stat-value-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.stat-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    margin-bottom: 6px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--color-primary);
+    letter-spacing: -0.0625rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+    min-width: 9rem;
+    text-align: left;
+    display: inline-block;
+    box-sizing: border-box;
+    font-family: 'SF Mono', Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+.stat-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-left: 28px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--color-muted);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.stat-unit {
+    font-size: 12px;
+    color: var(--color-muted);
+    font-weight: 500;
+    display: inline-block;
+    width: 50px;
+    text-align: left;
+    letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        gap: 1.5625rem 1.875rem;
+        width: 100%;
+        max-width: 31.25rem;
+        margin: 0 auto;
+    }
+    .stat-item {
+        align-items: center;
+        text-align: center;
+    }
+    .stat-value-row {
+        justify-content: center;
+    }
+    .stat-icon {
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-bottom: 0.5rem;
+    }
+    .stat-number {
+        font-size: 2.125rem;
+        min-width: 3.75rem;
+    }
+    .stat-meta {
+        margin-left: 0;
+        justify-content: center;
+    }
+    .stat-unit {
+        font-size: 0.75rem;
+        width: auto;
+        min-width: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        gap: 1.25rem 1.5rem;
+        max-width: 25rem;
+    }
+    .stat-number {
+        font-size: 2rem;
+        min-width: 3.25rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .stats-grid {
+        gap: 1rem 1.25rem;
+        max-width: 21.25rem;
+    }
+    .stat-number {
+        font-size: 1.75rem;
+        min-width: 2.75rem;
+    }
+}
+
+/* ─── Start Button ────────────────────────────────────── */
+.start-btn {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 14px 40px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, var(--color-start-from), var(--color-start-to));
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(103, 113, 255, 0.35);
+    letter-spacing: 0.05em;
+}
+
+.start-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(103, 113, 255, 0.45);
+}
+
+.start-btn.running {
+    background: linear-gradient(135deg, var(--color-stop-from), var(--color-stop-to));
+    box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
+}
+
+.start-btn.running:hover {
+    box-shadow: 0 6px 20px rgba(229, 62, 62, 0.5);
+}
+
+/* ─── Footer ──────────────────────────────────────────── */

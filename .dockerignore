@@ -1,0 +1,10 @@
+# Exclude from Docker build context to keep builds fast and images clean.
+node_modules
+**/node_modules
+.git
+.gitignore
+*.log
+backend-go/myspeed
+backend-go/static
+frontend/dist
+.DS_Store

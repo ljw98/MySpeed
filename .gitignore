@@ -1,0 +1,15 @@
+# Build output
+frontend/dist/
+backend-go/static/
+myspeed
+backend-go/myspeed
+
+# Dependencies
+frontend/node_modules/
+
+# Go
+backend-go/*.test
+
+# Editor / OS
+.DS_Store
+*.swpmemory/
